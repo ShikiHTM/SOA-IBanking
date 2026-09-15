@@ -7,9 +7,11 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon src/app/index.ts",
     "lint": "eslint ./src/",
-    "prettier": "prettier ./src/ --write",
+    "format:prettier": "prettier ./src/ --write",
+    "format:check": "prettier ./src/ --check",
     "build": "tsc && tsc-alias",
-    "start": "node dist/app/index.js"
+    "start": "node dist/app/index.js",
+    "ci": "pnpm format:check && pnpm lint && pnpm build"
   },
   "keywords": [],
   "author": "",
