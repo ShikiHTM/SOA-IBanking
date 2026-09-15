@@ -11,7 +11,7 @@
     "format:check": "prettier ./src/ --check",
     "build": "tsc && tsc-alias",
     "start": "node dist/app/index.js",
-    "ci": "pnpm format:check && pnpm lint && pnpm build"
+    "build:format": "pnpm format:check && pnpm lint && pnpm build"
   },
   "keywords": [],
   "author": "",

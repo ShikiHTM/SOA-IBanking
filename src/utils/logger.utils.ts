@@ -20,7 +20,6 @@ const fileFormat = format.combine(
     format.json(),
 );
 
-// Transport xoay vòng log chung (Info, Warn, Debug)
 const combinedFileTransport = new transports.DailyRotateFile({
     filename: 'logs/combined-%DATE%.log',
     datePattern: 'YYYY-MM-DD',

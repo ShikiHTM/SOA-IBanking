@@ -1,6 +1,7 @@
 import express, { type Express } from 'express';
 import cors from 'cors';
 import config from '@/configs/app.config';
+import logger from '@/utils/logger.utils';
 
 const app: Express = express();
 
@@ -8,5 +9,5 @@ const app: Express = express();
 app.use(cors());
 
 app.listen(config.port, () => {
-    console.log(`Listening on https://localhost:${config.port}`);
+    logger.info(`Listening on https://localhost:${config.port}`);
 });
