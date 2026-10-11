@@ -1,13 +1,12 @@
-import express, { type Express } from 'express';
-import cors from 'cors';
-import config from '@/configs/app.config';
-import logger from '@/utils/logger.utils';
+import { Hono } from "hono";
+import { cors } from "hono/cors";
+import appConfig from "@/configs/app.config";
 
-const app: Express = express();
+const app = new Hono();
 
-// configuration
-app.use(cors());
-
-app.listen(config.port, () => {
-    logger.info(`Listening on https://localhost:${config.port}`);
-});
+app.use(
+    "/api/*",
+    cors({
+        origin: ["https://localhost"],
+    }),
+);
