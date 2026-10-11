@@ -1,0 +1,16 @@
+version: "1.0"
+services:
+  postgres:
+    image: postgres:16-alphine
+    container_name: ibanking-postgre
+    ports:
+      - "5111:5111"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: ibanking
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  
+volumes:
+  pgdata:
