@@ -1,0 +1,16 @@
+{
+  "name": "@soa/service/user",
+  "version": "1.0.0",
+  "dependencies": {
+    "@hono/node-server": "^2.1.4",
+    "@prisma/orm-postgres": "8.0.0-rc.17",
+    "@soa/shared/log": "workspace:*",
+    "@types/node": "^26.5.1",
+    "dotenv": "^18.0.7",
+    "hono": "^4.13.13",
+    "prisma": "8.0.0-rc.22"
+  },
+  "scripts": {
+    "contract:emit": "prisma contract emit"
+  }
+}
