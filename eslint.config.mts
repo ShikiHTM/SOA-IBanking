@@ -25,6 +25,19 @@ export default defineConfig([
             semi: 'off',
             '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
             '@typescript-eslint/semi': ['error', 'always'],
+            '@typescript-eslint/explicit-member-accessibility': [
+                'error',
+                {
+                    accessibility: 'explicit',
+                    overrides: {
+                        cosntructors: 'no-public'
+                    }
+                }
+            ],
+            '@typescript-eslint/no-extraneous-class': 'error',
+            '@typescript-eslint/parameter-properties': 'error',
+            '@typescript-eslint/member-ordering': 'error',
+            '@typescript-eslint/no-inferrable-types': 'warn',
         },
     },
     eslintConfigPrettier,
