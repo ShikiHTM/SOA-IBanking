@@ -32,7 +32,8 @@
 ```json
 {
     "access_token": "eyJhbGciOiJIUzI1...",
-    "token_type": "Bearer"
+    "token_type": "Bearer",
+    "message": "Login successfully."
 }
 ```
 
