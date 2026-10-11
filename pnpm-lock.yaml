@@ -51,6 +51,105 @@ importers:
         specifier: ^8.70.0
         version: 8.70.0(eslint@10.10.0(jiti@2.7.0))(typescript@6.0.3)
 
+  applications/otp-service:
+    dependencies:
+      '@hono/node-server':
+        specifier: ^2.1.4
+        version: 2.1.4(hono@4.13.13)
+      '@hono/zod-validator':
+        specifier: ^0.9.1
+        version: 0.9.1(hono@4.13.13)(zod@4.6.6)
+      '@prisma/orm-postgres':
+        specifier: 8.0.0-rc.17
+        version: 8.0.0-rc.17(@prisma/cli-engine@0.7.0(@prisma/management-api-sdk@1.80.0)(magicast@0.5.5))(magicast@0.5.5)(temporal-polyfill@1.0.5)(typanion@3.14.0)(typescript@6.0.3)(vite@8.3.4(@types/node@26.5.1)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))
+      '@soa/shared/log':
+        specifier: workspace:*
+        version: link:../../shared/logger
+      '@types/node':
+        specifier: ^26.5.1
+        version: 26.5.1
+      dotenv:
+        specifier: ^18.0.7
+        version: 18.0.7
+      got:
+        specifier: ^16.0.0
+        version: 16.0.0
+      hono:
+        specifier: ^4.13.13
+        version: 4.13.13
+      prisma:
+        specifier: 8.0.0-rc.22
+        version: 8.0.0-rc.22(@types/node@26.5.1)(@vercel/nft@1.11.0)(magicast@0.5.5)(pg@8.22.0)(typanion@3.14.0)(typescript@6.0.3)(vite@8.3.4(@types/node@26.5.1)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))(vitest@5.0.3(@types/node@26.5.1)(vite@8.3.4(@types/node@26.5.1)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1)))(ws@8.22.0)
+      zod:
+        specifier: ^4.6.6
+        version: 4.6.6
+
+  applications/payment-service:
+    dependencies:
+      '@hono/node-server':
+        specifier: ^2.1.4
+        version: 2.1.4(hono@4.13.13)
+      '@hono/zod-validator':
+        specifier: ^0.9.1
+        version: 0.9.1(hono@4.13.13)(zod@4.6.6)
+      '@prisma/orm-postgres':
+        specifier: 8.0.0-rc.17
+        version: 8.0.0-rc.17(@prisma/cli-engine@0.7.0(@prisma/management-api-sdk@1.80.0)(magicast@0.5.5))(magicast@0.5.5)(temporal-polyfill@1.0.5)(typanion@3.14.0)(typescript@6.0.3)(vite@8.3.4(@types/node@26.5.1)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))
+      '@soa/shared/log':
+        specifier: workspace:*
+        version: link:../../shared/logger
+      '@types/node':
+        specifier: ^26.5.1
+        version: 26.5.1
+      dotenv:
+        specifier: ^18.0.7
+        version: 18.0.7
+      got:
+        specifier: ^16.0.0
+        version: 16.0.0
+      hono:
+        specifier: ^4.13.13
+        version: 4.13.13
+      prisma:
+        specifier: 8.0.0-rc.22
+        version: 8.0.0-rc.22(@types/node@26.5.1)(@vercel/nft@1.11.0)(magicast@0.5.5)(pg@8.22.0)(typanion@3.14.0)(typescript@6.0.3)(vite@8.3.4(@types/node@26.5.1)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))(vitest@5.0.3(@types/node@26.5.1)(vite@8.3.4(@types/node@26.5.1)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1)))(ws@8.22.0)
+      zod:
+        specifier: ^4.6.6
+        version: 4.6.6
+
+  applications/tuition-service:
+    dependencies:
+      '@hono/node-server':
+        specifier: ^2.1.4
+        version: 2.1.4(hono@4.13.13)
+      '@hono/zod-validator':
+        specifier: ^0.9.1
+        version: 0.9.1(hono@4.13.13)(zod@4.6.6)
+      '@prisma/orm-postgres':
+        specifier: 8.0.0-rc.17
+        version: 8.0.0-rc.17(@prisma/cli-engine@0.7.0(@prisma/management-api-sdk@1.80.0)(magicast@0.5.5))(magicast@0.5.5)(temporal-polyfill@1.0.5)(typanion@3.14.0)(typescript@6.0.3)(vite@8.3.4(@types/node@26.5.1)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))
+      '@soa/shared/log':
+        specifier: workspace:*
+        version: link:../../shared/logger
+      '@types/node':
+        specifier: ^26.5.1
+        version: 26.5.1
+      dotenv:
+        specifier: ^18.0.7
+        version: 18.0.7
+      got:
+        specifier: ^16.0.0
+        version: 16.0.0
+      hono:
+        specifier: ^4.13.13
+        version: 4.13.13
+      prisma:
+        specifier: 8.0.0-rc.22
+        version: 8.0.0-rc.22(@types/node@26.5.1)(@vercel/nft@1.11.0)(magicast@0.5.5)(pg@8.22.0)(typanion@3.14.0)(typescript@6.0.3)(vite@8.3.4(@types/node@26.5.1)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))(vitest@5.0.3(@types/node@26.5.1)(vite@8.3.4(@types/node@26.5.1)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1)))(ws@8.22.0)
+      zod:
+        specifier: ^4.6.6
+        version: 4.6.6
+
   applications/user-service:
     dependencies:
       '@hono/node-server':
