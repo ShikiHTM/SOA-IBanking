@@ -2,16 +2,11 @@
     "name": "SOA_IBanking",
     "version": "1.0.0",
     "description": "",
-    "main": "./src/index.ts",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "dev": "nodemon src/app/index.ts",
         "lint": "eslint ./src/",
         "format:prettier": "prettier ./src/ --write",
-        "format:check": "prettier ./src/ --check",
-        "build": "tsc && tsc-alias",
-        "start": "node dist/app/index.js",
-        "build:format": "pnpm format:check && pnpm lint && pnpm build"
+        "format:check": "prettier ./src/ --check"
     },
     "keywords": [],
     "author": "",
@@ -27,18 +22,11 @@
         "mermaid": "^12.0.0",
         "prettier": "3.9.6",
         "tsc-alias": "^1.9.5",
+        "tsx": "^4.23.15",
         "typescript": "^6.0.3",
-        "typescript-eslint": "^8.70.0"
-    },
-    "dependencies": {
-        "@hono/node-server": "^2.1.4",
+        "typescript-eslint": "^8.70.0",
         "@mermaid-js/mermaid-cli": "^12.0.0",
-        "cors": "^2.8.6",
-        "dotenv": "^17.4.2",
-        "eslint-config-prettier": "^10.1.8",
-        "hono": "^4.13.13",
-        "nodemon": "^3.1.14",
-        "winston": "^3.19.0",
-        "winston-daily-rotate-file": "^5.0.0"
-    }
+        "eslint-config-prettier": "^10.1.8"
+    },
+    "dependencies": {}
 }
