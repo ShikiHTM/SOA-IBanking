@@ -31,6 +31,7 @@
         "typescript-eslint": "^8.70.0"
     },
     "dependencies": {
+        "@hono/node-server": "^2.1.4",
         "@mermaid-js/mermaid-cli": "^12.0.0",
         "cors": "^2.8.6",
         "dotenv": "^17.4.2",
