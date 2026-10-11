@@ -1,9 +1,15 @@
 import "dotenv/config"
 import { Hono } from "hono";
+import {jwt} from "hono/jwt"
 import { db } from "../prisma/db"
 import type {Variables} from "../types/types"
 
 const user = new Hono<{ Variables: Variables }>();
+
+user.use("/*", jwt({
+    secret: process.env["SECRET_KEY"]!,
+    alg: "HS256"
+}))
 
 user.get("/me", async(c) => {
     const payload = c.get("jwtPayload");

@@ -22,8 +22,8 @@ app.use(
     })
 );
 
-app.route('/users', userRoute);
 app.route('/auth', authRoute);
+app.route('/users', userRoute);
 
 serve({
     fetch: app.fetch,
