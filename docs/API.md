@@ -4,12 +4,12 @@
 
 | Method | Endpoint | Description |
 | :-- | :-- | :-- |
-| POST | /auth/login | Login
-| GET | /users/me | Get session' user information
-| GET | /users/:id/ledger | Get user's ledger information
-| GET | /tuitions?student_id={id} | Get student current tuitions via student id
-| POST | /payment | Create a tuition transaction
-| POST | /payment/:id/verify | Verify a transaction using OTP
+| **POST** | /auth/login | Login
+| **GET** | /users/me | Get session' user information
+| **GET** | /users/:id/ledger | Get user's ledger information
+| **GET** | /tuitions?student_id={id} | Get student current tuitions via student id
+| **POST** | /payment | Create a tuition transaction
+| **POST** | /payment/:id/verify | Verify a transaction using OTP
 
 ## 2. Endpoints detail
 
