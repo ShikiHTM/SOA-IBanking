@@ -9,7 +9,7 @@ export default definePrismaConfig({
             connection: process.env["DATABASE_URL"]
         },
         migrations: {
-            dir: "./prisma/migrations"
+            dir: "./src/prisma/migrations"
         }
     })
 })
