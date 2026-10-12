@@ -6,4 +6,6 @@ model User {
     phone_number    String 
     email   String
     password    String
+
+    @@map("user")
 }

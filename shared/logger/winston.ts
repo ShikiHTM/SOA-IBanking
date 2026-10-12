@@ -6,7 +6,7 @@ const consoleFormat = format.combine(
     format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
     format.errors({ stack: true }),
     format.printf(({ level, message, timestamp, stack, ...metadata }) => {
-        let log = `${timestamp} [${level}]: ${stack || message}`;
+        let log = `${String(timestamp)} [${level}]: ${String(stack ?? message)}`;
         if (Object.keys(metadata).length > 0) {
             log += ` ${JSON.stringify(metadata)}`;
         }

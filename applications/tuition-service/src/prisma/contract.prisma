@@ -1,0 +1,23 @@
+// use prisma-8
+
+model Student {
+    id  String  @id @default(uuid())
+    name    String
+    tuitions    TuitionInvoice[]
+    @@map("student")
+}
+
+enum TuitionStatus {
+    @@type("pg/text@1")
+    PENDING = "pending"
+    OVERDUE = "overdue"
+    PAID    = "paid"
+}
+
+model TuitionInvoice {
+    id  String  @id @default(uuid())   
+    student  Student  @relation(fields: [student_id], references: [id], onDelete: Cascade)
+    student_id  String
+    status TuitionStatus @default(PENDING)
+    @@map("tuition_invoice")
+}
