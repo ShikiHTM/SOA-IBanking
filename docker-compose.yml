@@ -10,7 +10,20 @@ services:
       POSTGRES_PASSWORD: 123456
       POSTGRES_DB: user-db
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - user_pgdata:/var/lib/postgresql/data
   
+  tuition_db:
+    image: postgres:16-alpine
+    container_name: tuition-db
+    ports:
+      - "5112:5432"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: tuition-db
+    volumes:
+      - tuition_pgdata:/var/lib/postgresql/data
+
 volumes:
-  pgdata:
+  user_pgdata:
+  tuition_pgdata:

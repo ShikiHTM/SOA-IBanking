@@ -6,7 +6,7 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "lint": "eslint ./applications/ ./shared/",
         "lint:fix": "eslint ./applications/ ./shared/ --fix",
-        "format:prettier": "prettier ./applications/ --write",
+        "format:fix": "prettier ./applications/ --write",
         "format:check": "prettier ./applications/ --check",
         "user:dev": "pnpm --filter @soa/service/user run dev"
     },
