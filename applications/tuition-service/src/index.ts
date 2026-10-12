@@ -4,6 +4,7 @@ import { logger } from "hono/logger";
 import Logger from "@soa/shared/log";
 import { cors } from "hono/cors";
 import { serve } from "@hono/node-server";
+import tuition from "./routes/tuition";
 
 const app = new Hono();
 
@@ -22,6 +23,8 @@ app.use(
         maxAge: 600,
     }),
 );
+
+app.route("/tuitions", tuition);
 
 serve(
     {
