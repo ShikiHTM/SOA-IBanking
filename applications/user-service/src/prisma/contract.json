@@ -15,6 +15,13 @@
         "models": {
           "User": {
             "fields": {
+              "created_at": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
               "email": {
                 "nullable": false,
                 "type": {
@@ -50,6 +57,13 @@
                   "kind": "scalar"
                 }
               },
+              "updated_at": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
               "username": {
                 "nullable": false,
                 "type": {
@@ -61,6 +75,9 @@
             "relations": {},
             "storage": {
               "fields": {
+                "created_at": {
+                  "column": "created_at"
+                },
                 "email": {
                   "column": "email"
                 },
@@ -75,6 +92,9 @@
                 },
                 "phone_number": {
                   "column": "phone_number"
+                },
+                "updated_at": {
+                  "column": "updated_at"
                 },
                 "username": {
                   "column": "username"
@@ -95,6 +115,15 @@
           "table": {
             "user": {
               "columns": {
+                "created_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "dataType": "pg/timestamptz",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nullable": false
+                },
                 "email": {
                   "codecId": "pg/text@1",
                   "dataType": "pg/text",
@@ -118,6 +147,11 @@
                 "phone_number": {
                   "codecId": "pg/text@1",
                   "dataType": "pg/text",
+                  "nullable": false
+                },
+                "updated_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "dataType": "pg/timestamptz",
                   "nullable": false
                 },
                 "username": {
@@ -141,10 +175,10 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "ec721e290fe1a3d4f59d3ff5edf987285feb468d5979ac72458fc0c9877418ba"
+    "storageHash": "4ed37f51725d73ee5783a7ec09d8e781c42bc4c439e5413a1c42ffd83d2911ec"
   },
   "execution": {
-    "executionHash": "d981501b77eb078c4f6f035dc782dd8089bffdffd3321f30661a42599a436b79",
+    "executionHash": "a9fa091a3204e2d299539afe80214a4450a3d202991636f0837ddf884299d2c6",
     "mutations": {
       "defaults": [
         {
@@ -155,6 +189,21 @@
           "ref": {
             "entry": "user",
             "field": "id",
+            "namespace": "public"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "instantNow",
+            "kind": "generator"
+          },
+          "onUpdate": {
+            "id": "instantNow",
+            "kind": "generator"
+          },
+          "ref": {
+            "entry": "user",
+            "field": "updated_at",
             "namespace": "public"
           }
         }

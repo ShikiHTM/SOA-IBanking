@@ -12,8 +12,9 @@ const loginSchema = z.object({
     password: z.string().min(1),
 });
 
+// POST /api/auth/login
 auth.post(
-    "/auth/login",
+    "/login",
     zValidator("json", loginSchema, (result, c) => {
         if (!result.success) {
             return c.json(

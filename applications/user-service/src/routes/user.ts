@@ -20,7 +20,7 @@ user.onError((err, c) => {
     if (err instanceof HTTPException && err.status === 401) {
         return c.json({
             message: "Unauthorized, invalid or missing token",
-        });
+        }, 401);
     }
 
     logger.error(err);
@@ -32,6 +32,7 @@ user.onError((err, c) => {
     );
 });
 
+// GET /api/users/internal/me
 user.get("/internal/me", async (c) => {
     const payload = c.get("jwtPayload");
     const user_id = payload.user_id;
@@ -46,6 +47,7 @@ user.get("/internal/me", async (c) => {
     );
 });
 
+// GET /api/users/internal/:id
 user.get("/internal/:id", async (c) => {
     const user_id = c.req.param("id");
     const user = await db.orm.public.User.where({ id: user_id }).select("id", "name", "phone_number", "email", "username").first();

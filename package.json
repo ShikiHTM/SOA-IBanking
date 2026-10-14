@@ -16,9 +16,11 @@
     "packageManager": "pnpm@10.18.0",
     "devDependencies": {
         "@eslint/js": "^10.0.1",
+        "@mermaid-js/mermaid-cli": "^12.0.0",
         "@types/cors": "^2.8.19",
         "@types/node": "^26.5.1",
         "eslint": "^10.10.0",
+        "eslint-config-prettier": "^10.1.8",
         "globals": "^17.12.0",
         "jiti": "^2.7.0",
         "mermaid": "^12.0.0",
@@ -26,9 +28,6 @@
         "tsc-alias": "^1.9.5",
         "tsx": "^4.23.15",
         "typescript": "^6.0.3",
-        "typescript-eslint": "^8.70.0",
-        "@mermaid-js/mermaid-cli": "^12.0.0",
-        "eslint-config-prettier": "^10.1.8"
-    },
-    "dependencies": {}
+        "typescript-eslint": "^8.70.0"
+    }
 }
