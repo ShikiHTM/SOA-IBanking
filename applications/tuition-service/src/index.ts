@@ -24,7 +24,7 @@ app.use(
     }),
 );
 
-app.route("/tuitions", tuition);
+app.route("/api/tuitions", tuition);
 
 serve(
     {

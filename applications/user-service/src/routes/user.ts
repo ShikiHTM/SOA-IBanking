@@ -32,7 +32,7 @@ user.onError((err, c) => {
     );
 });
 
-user.get("/me", async (c) => {
+user.get("/internal/me", async (c) => {
     const payload = c.get("jwtPayload");
     const user_id = payload.user_id;
 

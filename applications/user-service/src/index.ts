@@ -25,8 +25,8 @@ app.use(
     }),
 );
 
-app.route("/auth", authRoute);
-app.route("/users", userRoute);
+app.route("/api/auth", authRoute);
+app.route("/api/users", userRoute);
 
 serve(
     {
