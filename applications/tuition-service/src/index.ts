@@ -32,6 +32,6 @@ serve(
         port: Number(process.env["PORT"]),
     },
     (info) => {
-        Logger.info(`User Service is running on http://localhost:${info.port}`);
+        Logger.info(`Tuition Service is running on http://localhost:${info.port}`);
     },
 );
