@@ -1,36 +1,9 @@
 import { Hono } from "hono";
 import { db } from "../prisma/db";
-import { jwt } from "hono/jwt";
 import { z } from "zod";
 import { zValidator } from "@hono/zod-validator";
-import { HTTPException } from "hono/http-exception";
-import logger from "@soa/shared/log";
 
 const tuition = new Hono();
-
-tuition.use(
-    "/*",
-    jwt({
-        secret: process.env["SECRET_KEY"]!,
-        alg: "HS256",
-    }),
-);
-
-tuition.onError((err, c) => {
-    if (err instanceof HTTPException && err.status === 401) {
-        return c.json({
-            message: "Unauthorized, invalid or missing token",
-        });
-    }
-
-    logger.error(err);
-    return c.json(
-        {
-            message: "Internal Server Error",
-        },
-        500,
-    );
-});
 
 const tuitionSchema = z.object({
     student_id: z.uuidv4(),

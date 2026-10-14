@@ -26,6 +26,22 @@ app.use(
 );
 
 app.route("/api/auth", authRoute);
+
+app.use(
+    "*",
+    async(c, next) => {
+        const header = c.req.header("X-User-Id")
+        
+        if(!header) {
+            return c.json({
+                "message": "Unauthorized, invalid or missing token.",
+            }, 401)
+        }
+
+        await next();
+    }
+)
+
 app.route("/api/users", userRoute);
 
 serve(

@@ -1,41 +1,14 @@
 import "dotenv/config";
 import { Hono } from "hono";
-import { jwt } from "hono/jwt";
 import { db } from "../prisma/db";
-import type { Variables } from "../types/types";
-import { HTTPException } from "hono/http-exception";
-import logger from "@soa/shared/log";
+import type { PaymentLedgerResponse, Variables } from "../types/types";
+import got from "got";
 
 const user = new Hono<{ Variables: Variables }>();
 
-user.use(
-    "/*",
-    jwt({
-        secret: process.env["SECRET_KEY"]!,
-        alg: "HS256",
-    }),
-);
-
-user.onError((err, c) => {
-    if (err instanceof HTTPException && err.status === 401) {
-        return c.json({
-            message: "Unauthorized, invalid or missing token",
-        }, 401);
-    }
-
-    logger.error(err);
-    return c.json(
-        {
-            message: "Internal Server Error",
-        },
-        500,
-    );
-});
-
 // GET /api/users/internal/me
 user.get("/internal/me", async (c) => {
-    const payload = c.get("jwtPayload");
-    const user_id = payload.user_id;
+    const user_id = c.req.header("X-User-Id");
 
     const user = await db.orm.public.User.where({ id: user_id }).select("id", "name", "phone_number", "email", "username").first();
 
@@ -67,6 +40,22 @@ user.get("/internal/:id", async (c) => {
         },
         200,
     );
+});
+
+// GET /api/users/interal/:id/ledger
+user.get("/internal/:id/ledger", async (c) => {
+    const user_id = c.req.param("id");   
+    const caller_id = c.req.header("X-User-Id");
+
+    if(caller_id !== user_id) {
+        return c.json({
+            "message": "Unauthorized, you are not allowed to do this action",
+        }, 403);
+    }
+
+    const ledger = await got.get(`${process.env["PAYMENT_SERVICE_URL"]}/api/internal/ledger?user_id=${user_id}`).json<PaymentLedgerResponse>();
+
+    return c.json({ledger});
 });
 
 export default user;
