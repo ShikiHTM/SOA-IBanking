@@ -67,6 +67,42 @@
 }
 ```
 
+---
+
+- **Method**: `GET`
+- **Endpoint**: `users/:id/ledger`
+- **Description**: Get user's ledger information
+
+**Path Parameter**:
+
+| parameter | description |
+| :--- | :--- |
+| id | User id
+
+**Response Success (200 OK)**:
+```json
+{
+    "amount": 1000000,
+    "payment_history": [
+        ...
+    ]
+}
+```
+
+**Response Error (401 Unauthorized)**:
+```json
+{
+    "message": "Unauthorized, invalid or missing token."
+}
+```
+
+**Response Error (403 Forbidden)**:
+```json
+{
+    "message": "You do not have permission to access this ledger."
+}
+```
+
 ### 2.3 Tuition
 
 - **Method**: `GET`
@@ -111,42 +147,6 @@
 ```json
 {
     "message": "Unauthorized, invalid or missing token."
-}
-```
-
----
-
-- **Method**: `GET`
-- **Endpoint**: `users/:id/ledger`
-- **Description**: Get user's ledger information
-
-**Path Parameter**:
-
-| parameter | description |
-| :--- | :--- |
-| id | User id
-
-**Response Success (200 OK)**:
-```json
-{
-    "amount": 1000000,
-    "payment_history": [
-        ...
-    ]
-}
-```
-
-**Response Error (401 Unauthorized)**:
-```json
-{
-    "message": "Unauthorized, invalid or missing token."
-}
-```
-
-**Response Error (403 Forbidden)**:
-```json
-{
-    "message": "You do not have permission to access this ledger."
 }
 ```
 
