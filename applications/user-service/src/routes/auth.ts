@@ -8,7 +8,7 @@ import { z } from "zod";
 const auth = new Hono();
 
 const loginSchema = z.object({
-    email: z.email(),
+    username: z.string().min(1),
     password: z.string().min(1),
 });
 
@@ -26,14 +26,14 @@ auth.post(
         }
     }),
     async (c) => {
-        const { email, password }: { email: string; password: string } = await c.req.json();
+        const { username, password }: { username: string; password: string } = await c.req.json();
 
-        const user = await db.orm.public.User.where({ email }).select("id", "email", "password").first();
+        const user = await db.orm.public.User.where({ username }).select("id", "username", "password").first();
 
         if (!user) {
             return c.json(
                 {
-                    message: "Incorrect email or password.",
+                    message: "Incorrect username or password.",
                 },
                 401,
             );
@@ -44,7 +44,7 @@ auth.post(
         if (hashed_password !== user.password) {
             return c.json(
                 {
-                    message: "Incorrect email or password.",
+                    message: "Incorrect username or password.",
                 },
                 401,
             );

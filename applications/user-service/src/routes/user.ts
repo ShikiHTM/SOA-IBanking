@@ -36,7 +36,7 @@ user.get("/internal/me", async (c) => {
     const payload = c.get("jwtPayload");
     const user_id = payload.user_id;
 
-    const user = await db.orm.public.User.where({ id: user_id }).select("id", "name", "phone_number", "email").first();
+    const user = await db.orm.public.User.where({ id: user_id }).select("id", "name", "phone_number", "email", "username").first();
 
     return c.json(
         {
@@ -48,7 +48,7 @@ user.get("/internal/me", async (c) => {
 
 user.get("/internal/:id", async (c) => {
     const user_id = c.req.param("id");
-    const user = await db.orm.public.User.where({ id: user_id }).select("id", "name", "phone_number", "email").first();
+    const user = await db.orm.public.User.where({ id: user_id }).select("id", "name", "phone_number", "email", "username").first();
 
     if (!user) {
         return c.json(
