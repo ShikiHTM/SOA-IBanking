@@ -23,7 +23,7 @@
 
 ```json
 {
-    "email": "example@gmail.com",
+    "username": "test",
     "password": "test123"
 }
 ```
@@ -40,7 +40,7 @@
 **Response Error (401 Unauthorized)**:
 ```json
 {
-    "message": "Incorrect email or password."
+    "message": "Incorrect username or password."
 }
 ```
 
@@ -167,7 +167,7 @@
 **Response Success (201 Created)**:
 ```json
 {
-    "transaction_id": "Tx12345",
+    "transaction_id": "4598ef...",
     "status": "PENDING",
     "message": "Transaction created successfully."
 }
@@ -216,7 +216,7 @@
 **Response Success (200 OK)**:
 ```json
 {
-    "transaction_id": "Tx12345",
+    "transaction_id": "4598ef...",
     "status": "COMPLETED",
     "message": "Payment verified and completed."
 }
