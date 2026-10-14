@@ -3,6 +3,7 @@ import { Hono } from "hono";
 import { db } from "../prisma/db";
 import type { PaymentLedgerResponse, Variables } from "../types/types";
 import got from "got";
+import logger from "@soa/shared/log";
 
 const user = new Hono<{ Variables: Variables }>();
 
@@ -53,9 +54,23 @@ user.get("/internal/:id/ledger", async (c) => {
         }, 403);
     }
 
-    const ledger = await got.get(`${process.env["PAYMENT_SERVICE_URL"]}/api/internal/ledger?user_id=${user_id}`).json<PaymentLedgerResponse>();
+    try {
+        const ledger = await got.get(`${process.env["PAYMENT_SERVICE_URL"]}/api/internal/ledger?user_id=${user_id}`,
+            {
+                timeout: {request: 3000} // 3000ms timeout
+            }
+        ).json<PaymentLedgerResponse>();
 
-    return c.json({ledger});
+        return c.json({ledger});
+    }
+    catch(error) {
+        logger.error(error);
+
+        return c.json({
+            "message": "Service is not available, try again later.",
+        }, 503)
+    }
+
 });
 
 export default user;
