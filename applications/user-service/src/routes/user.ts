@@ -43,14 +43,14 @@ user.get("/internal/:id", async (c) => {
     );
 });
 
-// GET /api/users/interal/:id/ledger
+// GET /api/users/internal/:id/ledger
 user.get("/internal/:id/ledger", async (c) => {
     const user_id = c.req.param("id");   
     const caller_id = c.req.header("X-User-Id");
 
     if(caller_id !== user_id) {
         return c.json({
-            "message": "Unauthorized, you are not allowed to do this action",
+            "message": "Forbidden, you are not allowed to do this action",
         }, 403);
     }
 
