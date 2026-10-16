@@ -1,0 +1,35 @@
+// use prisma-8
+
+enum PaymentStatus {
+    @@type("pg/text@1")
+    PENDING = "pending"
+    CANCELLED = "cancelled"
+    REJECTED = "rejected"
+    FAILED = "failed"
+    COMPLETED ="completed"
+}
+
+model PaymentTransaction {
+    id  String  @id @default(uuid()) // transaction_id
+
+    ledger_id String
+    tuition_id  String
+    amount Float
+    status PaymentStatus @default(PENDING)
+    created_at DateTime @default(now())
+    updated_at temporal.updatedAt()
+
+    ledger Ledger @relation(fields: [ledger_id], references: [id], onDelete: Cascade)
+    @@map("payment_transaction")
+}
+
+model Ledger {
+    id String @id @default(uuid())
+    user_id String
+    balance Float @default(0)
+    created_at DateTime @default(now())
+    updated_at temporal.updatedAt()
+
+    transactions PaymentTransaction[]
+    @@map("ledger")
+}
