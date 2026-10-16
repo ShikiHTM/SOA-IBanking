@@ -117,16 +117,18 @@
 
 **Response Success (200 OK)**:
 ```json
-[
-    {
-        "id": "4598ef...",
-        "amount": 1000000,
-        "status": "PENDING",
-        "student_id": "4598ef...",
-        "student_name": "John Doe"
-    },
+{
+    "id": "524H0006",
+    "name": "John Doe",
+    "tuitions": [
+        {
+            "id": "4598ef...",
+            "amount": 1000000,
+            "status": "PENDING",
+        },
+    ]
     ...
-]
+}
 ```
 
 **Response Error (400 Bad Request)**:
