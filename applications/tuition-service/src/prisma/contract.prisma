@@ -1,7 +1,7 @@
 // use prisma-8
 
 model Student {
-    id  String  @id @default(uuid())
+    id  String  @id
     name    String
     tuitions    TuitionInvoice[]
     @@map("student")

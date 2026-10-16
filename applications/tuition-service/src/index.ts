@@ -5,6 +5,7 @@ import Logger from "@soa/shared/log";
 import { cors } from "hono/cors";
 import { serve } from "@hono/node-server";
 import tuition from "./routes/tuition";
+import student from "./routes/student";
 
 const app = new Hono();
 
@@ -40,6 +41,7 @@ app.use(
 )
 
 app.route("/api/tuitions", tuition);
+app.route("/api/students", student);
 
 serve(
     {
