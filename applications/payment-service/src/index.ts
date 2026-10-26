@@ -1,9 +1,11 @@
-import "dotenv/config"
+import "dotenv/config";
 import Logger from "@soa/shared/log";
-import { Hono } from "hono"
+import { Hono } from "hono";
 import { logger } from "hono/logger";
 import { cors } from "hono/cors";
 import { serve } from "@hono/node-server";
+import payment from "./routes/payment";
+import ledger from "./routes/ledger";
 
 const app = new Hono();
 
@@ -11,8 +13,8 @@ app.use(
     "*",
     logger((message, ...rest) => {
         Logger.info(message, rest);
-    })
-)
+    }),
+);
 
 app.use(
     "/api/*",
@@ -20,30 +22,34 @@ app.use(
         origin: ["http://localhost:3000"],
         allowMethods: ["GET", "POST", "PUT"],
         maxAge: 600,
-    })
-)
+    }),
+);
 
-app.use(
-    "*",
-    async(c, next) => {
-        const header = c.req.header("X-JWT-Token")
-        
-        if(!header) {
-            return c.json({
-                "message": "Unauthorized, invalid or missing token.",
-            }, 401)
-        }
+app.route("/api/internal/ledger", ledger);
 
-        await next();
+app.use("*", async (c, next) => {
+    const header = c.req.header("X-User-Id");
+
+    if (!header) {
+        return c.json(
+            {
+                message: "Unauthorized, invalid or missing token.",
+            },
+            401,
+        );
     }
-)
+
+    await next();
+});
+
+app.route("/api/payment", payment);
 
 serve(
     {
         fetch: app.fetch,
-        port: Number(process.env["PORT"])
+        port: Number(process.env["PORT"]),
     },
     (info) => {
         Logger.info(`Payment Service is running on http://localhost:${info.port}`);
-    }
-)
+    },
+);
