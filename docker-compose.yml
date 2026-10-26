@@ -10,7 +10,7 @@ services:
       POSTGRES_DB: user-db
     volumes:
       - user_pgdata:/var/lib/postgresql/data
-  
+
   tuition_db:
     image: postgres:16-alpine
     container_name: tuition-db
@@ -22,6 +22,7 @@ services:
       POSTGRES_DB: tuition-db
     volumes:
       - tuition_pgdata:/var/lib/postgresql/data
+
   payment_db:
     image: postgres:16-alpine
     container_name: payment-db
@@ -34,7 +35,16 @@ services:
     volumes:
       - payment_pgdata:/var/lib/postgresql/data
 
+  otp_redis:
+    image: redis:7-alpine
+    container_name: otp-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - otp_redisdata:/data
+
 volumes:
   user_pgdata:
   tuition_pgdata:
   payment_pgdata:
+  otp_redisdata:
