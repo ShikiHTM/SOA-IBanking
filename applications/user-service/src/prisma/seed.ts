@@ -7,6 +7,7 @@ function hashPassword(password: string): string {
 
 const users = [
     {
+        id: "11111111-1111-4111-8111-111111111111",
         username: "john_doe",
         name: "John Doe",
         phone_number: "0901234567",
@@ -14,6 +15,7 @@ const users = [
         password: hashPassword("password123"),
     },
     {
+        id: "22222222-2222-4222-8222-222222222222",
         username: "jane_smith",
         name: "Jane Smith",
         phone_number: "0902345678",
@@ -21,6 +23,7 @@ const users = [
         password: hashPassword("password123"),
     },
     {
+        id: "33333333-3333-4333-8333-333333333333",
         username: "alice_wonder",
         name: "Alice Wonder",
         phone_number: "0903456789",
@@ -40,14 +43,14 @@ async function main() {
         }
 
         await db.orm.public.User.create(user);
-        console.log(`Created user: ${user.username} (${user.email})`);
+        console.log(`Created user: ${user.username} (${user.id})`);
     }
 
     console.log("Seeding completed successfully.");
+    await db.close();
 }
 
-main()
-    .catch((err) => {
-        console.error("Error seeding users:", err);
-        process.exit(1);
-    });
+main().catch((err) => {
+    console.error("Error seeding users:", err);
+    process.exit(1);
+});

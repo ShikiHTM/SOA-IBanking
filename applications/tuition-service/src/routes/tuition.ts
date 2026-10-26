@@ -7,7 +7,7 @@ import logger from "@soa/shared/log";
 const tuition = new Hono();
 
 const tuitionSchema = z.object({
-    student_id: z.uuidv4(),
+    student_id: z.string().regex(/^[0-9A-H]\d{2}[0HK]\d{4}$/),
     amount: z.float64().default(0),
 });
 
@@ -56,6 +56,43 @@ const invoiceSchema = z.object({
     id: z.uuid(),
 });
 
+// GET /api/tuitions/internal/:id
+tuition.get(
+    "/internal/:id",
+    zValidator("param", invoiceSchema, (result, c) => {
+        if (!result.success) {
+            return c.json(
+                {
+                    message: "Invalid invoice id.",
+                },
+                400,
+            );
+        }
+    }),
+    async (c) => {
+        const { id } = c.req.valid("param");
+        const invoice = await db.orm.public.TuitionInvoice.where({ id })
+            .select("id", "student_id", "amount", "status")
+            .first();
+
+        if (!invoice) {
+            return c.json(
+                {
+                    message: "Tuition invoice not found.",
+                },
+                404,
+            );
+        }
+
+        return c.json(
+            {
+                tuition: invoice,
+            },
+            200,
+        );
+    },
+);
+
 tuition.put(
     "/internal/:id/status",
     zValidator("json", statusSchema, (result, c) => {
@@ -98,7 +135,8 @@ tuition.put(
 );
 
 // POST /api/tuitions/internal
-tuition.post("/internal", 
+tuition.post(
+    "/internal",
     zValidator("json", tuitionSchema, (result, c) => {
         if (!result.success) {
             return c.json(
@@ -108,16 +146,13 @@ tuition.post("/internal",
                 400,
             );
         }
-    })
-    ,
+    }),
     async (c) => {
         const { student_id, amount } = c.req.valid("json");
 
-        const student = await db.orm.public.Student.where({ id: student_id })
-            .select("id", "name")
-            .first();
+        const student = await db.orm.public.Student.where({ id: student_id }).select("id", "name").first();
 
-        if(!student) {
+        if (!student) {
             return c.json(
                 {
                     message: "Student not found.",
@@ -129,19 +164,22 @@ tuition.post("/internal",
         try {
             const new_tuition = await db.orm.public.TuitionInvoice.create({
                 amount,
-                student_id
-            })
+                student_id,
+            });
 
             return c.json({
-                new_tuition
-            })
-        }catch(error) {
+                new_tuition,
+            });
+        } catch (error) {
             logger.error(error);
-            return c.json({
-                "message": "Can't create new tuition."
-            }, 500)
+            return c.json(
+                {
+                    message: "Can't create new tuition.",
+                },
+                500,
+            );
         }
-    }
-)
+    },
+);
 
 export default tuition;
