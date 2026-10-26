@@ -8,7 +8,12 @@
         "lint:fix": "eslint ./applications/ ./shared/ --fix",
         "format:fix": "prettier ./applications/ --write",
         "format:check": "prettier ./applications/ --check",
-        "user:dev": "pnpm --filter @soa/service/user run dev"
+        "dev": "pnpm --parallel --filter \"@soa/service/*\" run dev",
+        "gateway:dev": "pnpm --filter @soa/service/gateway run dev",
+        "user:dev": "pnpm --filter @soa/service/user run dev",
+        "tuition:dev": "pnpm --filter @soa/service/tuition run dev",
+        "payment:dev": "pnpm --filter @soa/service/payment run dev",
+        "otp:dev": "pnpm --filter @soa/service/otp run dev"
     },
     "keywords": [],
     "author": "",
