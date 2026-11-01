@@ -66,5 +66,16 @@ pnpm --filter @soa/service/user run seed
 pnpm --filter @soa/service/tuition run seed
 pnpm --filter @soa/service/payment run seed
 
-pnpm run dev
+$frontendProcess = Start-Process pnpm -ArgumentList "dlx", "serve", "applications/frontend", "-l", "3000" -PassThru
+Start-Sleep -Seconds 1
+Start-Process "http://localhost:3000"
+
+try {
+    pnpm run dev
+}
+finally {
+    if ($frontendProcess -and -not $frontendProcess.HasExited) {
+        taskkill /PID $frontendProcess.Id /T /F 2>$null
+    }
+}
 

@@ -67,5 +67,25 @@ pnpm --filter @soa/service/user run seed
 pnpm --filter @soa/service/tuition run seed
 pnpm --filter @soa/service/payment run seed
 
+pnpm dlx serve applications/frontend -l 3000 &
+FRONTEND_PID=$!
+
+sleep 1
+
+URL="http://localhost:3000"
+if command -v xdg-open >/dev/null 2>&1; then
+    xdg-open "$URL" >/dev/null 2>&1 &
+elif command -v open >/dev/null 2>&1; then
+    open "$URL" >/dev/null 2>&1 &
+elif command -v wslview >/dev/null 2>&1; then
+    wslview "$URL" >/dev/null 2>&1 &
+elif command -v cmd.exe >/dev/null 2>&1; then
+    cmd.exe /c start "$URL" >/dev/null 2>&1 &
+elif [ -n "$BROWSER" ]; then
+    "$BROWSER" "$URL" >/dev/null 2>&1 &
+fi
+
+trap 'kill $FRONTEND_PID 2>/dev/null || true' EXIT INT TERM
+
 pnpm run dev
 
