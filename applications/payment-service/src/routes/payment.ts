@@ -117,6 +117,17 @@ payment.post(
                 };
             }
 
+            const existingPendingTx = existingTxs.find(
+                (t) => t.ledger_id === ledger.id && t.status === "pending",
+            );
+
+            if (existingPendingTx) {
+                return {
+                    ok: true as const,
+                    transaction: existingPendingTx,
+                };
+            }
+
             const created = await tx.orm.public.PaymentTransaction.create({
                 ledger_id: ledger.id,
                 tuition_id,
