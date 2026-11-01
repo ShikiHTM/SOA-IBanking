@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOA-IBanking</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="stylesheet" href="style/style.css" />
+    <link rel="stylesheet" href="style/home.css" />
+    <script src="script/main.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+
+<body>
+    <div x-data="bankingApp()" class="app-container" :class="{ 'is-home': currentScreen === 'home' }">
+        <!-- Login Screen -->
+        <div x-show="currentScreen === 'login'" class="login-wrapper" x-transition.opacity>
+            <header class="login-header">
+                <h1 class="login-title">IBanking</h1>
+            </header>
+
+            <form class="login-box" @submit.prevent="processLogin()" novalidate>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input id="username" type="text" x-model="credentials.username" @input="errorMessage = ''"
+                        autocomplete="username" autofocus />
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="password-input-wrapper">
+                        <input id="password" :type="showPassword ? 'text' : 'password'" x-model="credentials.password"
+                            @input="errorMessage = ''" autocomplete="current-password" />
+                        <button type="button" class="toggle-password-btn" @click="showPassword = !showPassword">
+                            <i :class="showPassword ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash'"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div x-show="errorMessage" x-transition.opacity class="error-message" role="alert">
+                    <span x-text="errorMessage"></span>
+                </div>
+
+                <button type="submit" class="login-btn" :disabled="isLoading">
+                    <span x-show="!isLoading">Sign in</span>
+                    <span x-show="isLoading" class="btn-loading">
+                        <span class="spinner"></span>
+                        <span>Processing...</span>
+                    </span>
+                </button>
+            </form>
+        </div>
+
+        <!-- Home Screen -->
+        <div x-show="currentScreen === 'home'" class="home-wrapper" x-transition.opacity style="display: none;">
+            <!-- Left Column: Profile, Account Info, Transaction History -->
+            <section class="home-left-col">
+                <div class="profile-bar">
+                    <div class="profile-greeting">
+                        <div class="avatar-circle">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                        <h2 class="greeting-text">
+                            Hello, <span x-text="userInfo?.name || userInfo?.username || 'User'"></span>!
+                        </h2>
+                    </div>
+
+                    <button type="button" class="logout-btn" @click="logout()">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span>logout</span>
+                    </button>
+                </div>
+
+                <div class="user-info-card">
+                    <div class="info-row">
+                        <span class="info-label">Username:</span>
+                        <span class="info-value" x-text="userInfo?.username || '—'"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Email:</span>
+                        <span class="info-value" x-text="userInfo?.email || '—'"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Password:</span>
+                        <span class="info-value">********</span>
+                    </div>
+                    <div class="info-row balance-row">
+                        <span class="info-label">balance:</span>
+                        <span class="info-value balance-amount">
+                            <span x-text="formatCurrency(balance)"></span> VND
+                        </span>
+                    </div>
+                </div>
+
+                <div class="transaction-section">
+                    <h3 class="section-title">Transaction history</h3>
+                    <div class="transaction-list-box">
+                        <template x-if="isLoadingHome">
+                            <div class="empty-state">Loading transaction history...</div>
+                        </template>
+
+                        <template x-if="!isLoadingHome && transactions.length === 0">
+                            <div class="empty-state">No record found.</div>
+                        </template>
+
+                        <template x-for="tx in transactions" :key="tx.id">
+                            <div class="transaction-item"
+                                :class="{ 'is-clickable': (tx.status || '').toLowerCase() === 'pending' }"
+                                @click="(tx.status || '').toLowerCase() === 'pending' && resumePendingTransaction(tx)"
+                                :title="(tx.status || '').toLowerCase() === 'pending' ? 'Click to enter OTP' : ''">
+                                <div class="tx-details">
+                                    <div class="tx-to">
+                                        To: <span x-text="tx.tuition_id"></span>
+                                    </div>
+                                    <div class="tx-amount">
+                                        Amount: <span x-text="formatCurrency(tx.amount) + ' VND'"></span>
+                                    </div>
+                                </div>
+                                <span class="tx-status-badge" :class="'status-' + (tx.status || '').toLowerCase()"
+                                    x-text="tx.status"></span>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Column: Student Lookup & Tuition List -->
+            <section class="home-right-col">
+                <div class="lookup-section">
+                    <h3 class="section-title">Student look up</h3>
+                    <form class="lookup-bar" @submit.prevent="lookupStudent()">
+                        <input type="text" class="lookup-input" x-model="studentQuery" @input="lookupError = ''"
+                            placeholder="Input Student ID (e.g., 522H0001)..." />
+                        <button type="submit" class="lookup-btn" :disabled="isSearchingStudent" title="Search student">
+                            <i x-show="!isSearchingStudent" class="fa-solid fa-magnifying-glass"></i>
+                            <span x-show="isSearchingStudent" class="spinner spinner-dark"></span>
+                        </button>
+                    </form>
+
+                    <div x-show="lookupError" x-transition.opacity class="error-message lookup-error"
+                        x-text="lookupError"></div>
+                </div>
+
+                <!-- Placeholder when no student is searched yet -->
+                <template x-if="!studentResult && !isSearchingStudent">
+                    <div class="student-placeholder-box">
+                        <div class="placeholder-icon">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <p class="placeholder-title">Search for a student</p>
+                        <p class="placeholder-desc">
+                            Enter a Student ID above to view student details and pending tuition invoices.
+                        </p>
+                    </div>
+                </template>
+
+                <!-- Student Result: Student Info + Tuition List -->
+                <template x-if="studentResult">
+                    <div class="student-result-container" x-transition.opacity>
+                        <!-- Student Information Card -->
+                        <div class="student-info-card">
+                            <div class="student-avatar">
+                                <i class="fa-solid fa-user-graduate"></i>
+                            </div>
+                            <div class="student-meta">
+                                <div class="student-info-row">
+                                    <span class="info-label">Student name:</span>
+                                    <span class="student-name" x-text="studentResult.name"></span>
+                                </div>
+                                <div class="student-info-row">
+                                    <span class="info-label">Student ID:</span>
+                                    <span class="student-id-pill" x-text="studentResult.id"></span>
+                                </div>
+                            </div>
+                            <div class="student-summary-badge">
+                                <span x-text="(studentResult.tuitions?.length || 0) + ' unpaid'"></span>
+                            </div>
+                        </div>
+
+                        <!-- Tuition List -->
+                        <div class="tuition-section">
+                            <div class="tuition-section-header">
+                                <h3 class="section-title">Tuition list</h3>
+                                <span class="tuition-count"
+                                    x-text="(studentResult.tuitions?.length || 0) + ' invoice(s)'"></span>
+                            </div>
+
+                            <div class="tuition-list-box">
+                                <template x-if="!studentResult.tuitions || studentResult.tuitions.length === 0">
+                                    <div class="empty-state">
+                                        <i class="fa-regular fa-circle-check empty-check-icon"></i>
+                                        <p>All tuition invoices have been paid!</p>
+                                    </div>
+                                </template>
+
+                                <template x-for="tuition in studentResult.tuitions" :key="tuition.id">
+                                    <div class="tuition-item">
+                                        <div class="tuition-details">
+                                            <div class="tuition-id-line">
+                                                <span class="tuition-label">Invoice ID:</span>
+                                                <span class="tuition-id-code" x-text="tuition.id"></span>
+                                            </div>
+                                            <div class="tuition-amount-line">
+                                                <span class="tuition-label">Amount:</span>
+                                                <span class="tuition-amount-value"
+                                                    x-text="formatCurrency(tuition.amount) + ' VND'"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="tuition-actions">
+                                            <span class="tx-status-badge"
+                                                :class="'status-' + (tuition.status || 'pending').toLowerCase()"
+                                                x-text="tuition.status || 'pending'"></span>
+
+                                            <button type="button" class="pay-tuition-btn"
+                                                @click="handlePayClick(tuition)"
+                                                :disabled="isInitiatingPayment && selectedTuition?.id === tuition.id">
+                                                <template
+                                                    x-if="!(isInitiatingPayment && selectedTuition?.id === tuition.id)">
+                                                    <span>
+                                                        <i class="fa-solid"
+                                                            :class="getPendingTxForTuition(tuition.id) ? 'fa-key' : 'fa-paper-plane'"></i>
+                                                        <span
+                                                            x-text="getPendingTxForTuition(tuition.id) ? 'Enter OTP' : 'Pay'"></span>
+                                                    </span>
+                                                </template>
+                                                <template
+                                                    x-if="isInitiatingPayment && selectedTuition?.id === tuition.id">
+                                                    <span class="btn-loading">
+                                                        <span class="spinner"></span>
+                                                        <span>Sending OTP...</span>
+                                                    </span>
+                                                </template>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+
+                            <div x-show="paymentError" x-transition.opacity class="error-message lookup-error"
+                                x-text="paymentError"></div>
+                            <div x-show="paymentSuccess" x-transition.opacity class="success-message lookup-error"
+                                x-text="paymentSuccess"></div>
+                        </div>
+                    </div>
+                </template>
+            </section>
+        </div>
+
+        <!-- OTP Verification Modal -->
+        <div x-show="otpModalOpen" class="modal-backdrop" x-transition.opacity style="display: none;">
+            <div class="otp-modal" @click.outside="closeOtpModal()">
+                <div class="otp-modal-header">
+                    <h3 class="otp-modal-title">Verify OTP</h3>
+                    <button type="button" class="modal-close-btn" @click="closeOtpModal()">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <p class="otp-modal-desc">
+                    A 6-digit OTP code has been sent to <strong x-text="userInfo?.email || 'your email'"></strong> to
+                    confirm payment of
+                    <strong x-text="formatCurrency(selectedTuition?.amount) + ' VND'"></strong>.
+                </p>
+
+                <form class="otp-form" @submit.prevent="verifyOtpPayment()">
+                    <div class="otp-digits-group" @paste.prevent="handleOtpPaste($event)">
+                        <template x-for="(_, index) in otpDigits" :key="index">
+                            <input type="text" class="otp-digit-box" :id="'otp-digit-' + index" maxlength="1"
+                                inputmode="numeric" autocomplete="one-time-code" :value="otpDigits[index]"
+                                @input="handleOtpInput($event, index)" @keydown="handleOtpKeydown($event, index)"
+                                @focus="$event.target.select()" />
+                        </template>
+                    </div>
+
+                    <div class="otp-resend-row">
+                        <span>Didn't receive the code?</span>
+                        <button type="button" class="resend-otp-btn" @click="resendOtp()"
+                            :disabled="isInitiatingPayment || isVerifyingOtp">
+                            <span x-show="!isInitiatingPayment">Resend OTP</span>
+                            <span x-show="isInitiatingPayment">Sending...</span>
+                        </button>
+                    </div>
+
+                    <div x-show="otpError" x-transition.opacity class="error-message" x-text="otpError"></div>
+
+                    <div class="otp-modal-actions">
+                        <button type="button" class="btn-secondary" @click="closeOtpModal()" :disabled="isVerifyingOtp">
+                            Cancel
+                        </button>
+                        <button type="submit" class="login-btn otp-submit-btn" :disabled="isVerifyingOtp">
+                            <span x-show="!isVerifyingOtp">Confirm Payment</span>
+                            <span x-show="isVerifyingOtp" class="btn-loading">
+                                <span class="spinner"></span>
+                                <span>Verifying...</span>
+                            </span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
