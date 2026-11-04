@@ -19,7 +19,7 @@ This document is about the **Use Case Diagram** of the project.
 ---
 config:
     theme: default
-    look: classic:
+    look: classic
     layout: dagre
 ---
 usecase-beta
