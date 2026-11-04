@@ -15,29 +15,4 @@ This document is about the **Use Case Diagram** of the project.
 
 ## Use case Diagram
 
-```mermaid
----
-config:
-    theme: default
-    look: classic
----
-usecase-beta
-
-actor U("User")
-
-systemBoundary "IBanking"
-    usecase login("Sign In")
-    usecase profile("View Profile")
-    usecase lookup("Lookup Student & Tuitions")
-    usecase pay("Pay Tuition")
-    usecase verify("Verify Payment")
-    usecase logout("Sign out")
-end
-
-U --> login
-U --> profile
-U --> lookup
-U --> pay
-pay ..> verify : "<<include>>"
-U --> logout
-```
+![use_case_diagram](UseCaseDiagram1.jpg)
