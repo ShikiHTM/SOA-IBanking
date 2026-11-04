@@ -4,6 +4,8 @@ model Student {
     id  String  @id
     name    String
     tuitions    TuitionInvoice[]
+    created_at DateTime @default(now())
+    updated_at temporal.updatedAt()
     @@map("student")
 }
 
@@ -15,10 +17,12 @@ enum TuitionStatus {
 }
 
 model TuitionInvoice {
-    id  String  @id @default(uuid())   
+    id  String  @id @default(uuid())
     student  Student  @relation(fields: [student_id], references: [id], onDelete: Cascade)
     student_id  String
     amount  Float
     status TuitionStatus @default(PENDING)
+    created_at DateTime @default(now())
+    updated_at temporal.updatedAt()
     @@map("tuition_invoice")
 }
