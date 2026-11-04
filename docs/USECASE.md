@@ -20,26 +20,24 @@ This document is about the **Use Case Diagram** of the project.
 config:
     theme: default
     look: classic
-    layout: dagre
 ---
 usecase-beta
-directory LR
 
 actor U("User")
 
 systemBoundary "IBanking"
-    login("Sign In")
-    profile("View Profile")
-    lookup("Lookup Student & Tuitions")
-    pay("Pay Tuition")
-    verify("Verify Payment")
-    logout("Sign out")
+    usecase login("Sign In")
+    usecase profile("View Profile")
+    usecase lookup("Lookup Student & Tuitions")
+    usecase pay("Pay Tuition")
+    usecase verify("Verify Payment")
+    usecase logout("Sign out")
 end
 
 U --> login
 U --> profile
 U --> lookup
 U --> pay
-pay ..> : include verify
+pay ..> verify : "<<include>>"
 U --> logout
 ```
